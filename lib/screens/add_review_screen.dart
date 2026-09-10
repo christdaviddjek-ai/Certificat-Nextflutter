@@ -59,17 +59,43 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                 },
               ),
               const SizedBox(height: 16),
-              Text(
-                'Note : ${_rating.toStringAsFixed(1)} / 10',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Slider(
-                value: _rating,
-                min: 0,
-                max: 10,
-                divisions: 20,
-                label: _rating.toStringAsFixed(1),
-                onChanged: (value) => setState(() => _rating = value),
+              FormField<double>(
+                initialValue: _rating,
+                validator: (value) {
+                  if (value == null || value <= 0) {
+                    return 'La note doit être supérieure à 0';
+                  }
+                  return null;
+                },
+                builder: (field) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Note : ${_rating.toStringAsFixed(1)} / 10',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      Slider(
+                        value: _rating,
+                        min: 0,
+                        max: 10,
+                        divisions: 20,
+                        label: _rating.toStringAsFixed(1),
+                        onChanged: (value) {
+                          setState(() => _rating = value);
+                          field.didChange(value);
+                        },
+                      ),
+                      if (field.hasError)
+                        Text(
+                          field.errorText!,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                    ],
+                  );
+                },
               ),
               const SizedBox(height: 16),
               TextFormField(

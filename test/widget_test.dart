@@ -1,30 +1,56 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:cinescope/main.dart';
+import 'package:cinescope/screens/add_review_screen.dart';
+import 'package:cinescope/widgets/movie_card.dart';
+import 'package:cinescope/models/movie.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('AddReviewScreen validates required fields', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(home: AddReviewScreen(movieId: 1)),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.text("Envoyer l'avis"));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Le nom est obligatoire'), findsOneWidget);
+    expect(find.text('Le commentaire est obligatoire'), findsOneWidget);
+    expect(find.byType(Slider), findsOneWidget);
+  });
+
+  testWidgets('MovieCard displays movie title and rating', (
+    WidgetTester tester,
+  ) async {
+    var tapped = false;
+    const movie = Movie(
+      id: 1,
+      title: 'Film de test',
+      overview: 'Synopsis',
+      posterPath: '',
+      voteAverage: 8.4,
+      releaseDate: '2026-01-01',
+      genreIds: [],
+    );
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SizedBox(
+            height: 400,
+            width: 200,
+            child: MovieCard(movie: movie, onTap: () => tapped = true),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Film de test'), findsOneWidget);
+    expect(find.text('8.4'), findsOneWidget);
+
+    await tester.tap(find.text('Film de test'));
+    expect(tapped, isTrue);
   });
 }

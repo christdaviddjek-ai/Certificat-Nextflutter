@@ -47,7 +47,7 @@ CinéScope permet de parcourir les films populaires, de les rechercher, de consu
 | Gestion d'état            | [provider](https://pub.dev/packages/provider)                         |
 | Appels API                | [http](https://pub.dev/packages/http)                                 |
 | Variables d'environnement | [flutter_dotenv](https://pub.dev/packages/flutter_dotenv)             |
-| Cache d'images             | [cached_network_image](https://pub.dev/packages/cached_network_image) |
+| Cache d'images            | [cached_network_image](https://pub.dev/packages/cached_network_image) |
 | Source de données         | [TMDB API](https://www.themoviedb.org/documentation/api)              |
 
 ---
