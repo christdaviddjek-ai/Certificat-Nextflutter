@@ -4,14 +4,18 @@ import 'package:provider/provider.dart';
 
 import 'theme/app_theme.dart';
 import 'theme/theme_notifier.dart';
+import 'services/favorites_notifier.dart';
 import 'router/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+        ChangeNotifierProvider(create: (_) => FavoritesNotifier()),
+      ],
       child: const MyApp(),
     ),
   );
